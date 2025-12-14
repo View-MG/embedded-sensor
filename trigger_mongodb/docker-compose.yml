@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  listener:
+    build: .
+    container_name: curtain-listener
+    restart: always
+    
+    # 💡 เพิ่มบรรทัดนี้: ตั้งค่า Network mode เป็น host
+    #    (ช่วยให้ Container ใช้ Network ของ Host โดยตรง ลดปัญหาการเชื่อมต่อภายนอก)
+    network_mode: host 
+    
+    env_file:
+      - .env.listener
+    volumes:
+      # การ mount ไฟล์ serviceAccountKey.json ถูกต้องแล้ว
+      - ./serviceAccountKey.json:/usr/src/app/serviceAccountKey.json:ro
+    # ไม่ต้องเพิ่ม CMD เพราะถูกกำหนดใน Dockerfile แล้ว
